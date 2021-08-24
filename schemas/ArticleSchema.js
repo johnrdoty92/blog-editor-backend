@@ -9,7 +9,16 @@ const ArticleSchema = new mongoose.Schema(
     description: { type: String, required: true },
     author: { type: String, required: true },
     date: { type: Date, default: Date.now, required: true },
-    HTMLcontent: { type: String, required: true },
+    HTMLcontent: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (v) {
+          return /^<\w+>.*<\/\w+>$/.test(v);
+        },
+        message: "Invalid Content",
+      },
+    },
     tags: [String],
   },
   { collection: "testArticles" } //Change collection here before actual use

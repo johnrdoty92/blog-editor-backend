@@ -1,9 +1,11 @@
-import { postNewArticle, getRequest } from "./../controllers/controllers.js";
+import { postNewArticle, getArticles, updateArticle, deleteArticle } from "../controllers/articles.js";
 import express from "express";
 
-const router = express.Router();
+const articleRouter = express.Router();
 
-router.get("/", getRequest);
-router.post("/", postNewArticle);
+articleRouter.post("/", postNewArticle);
+articleRouter.get("/", getArticles);
+articleRouter.patch("/:id", updateArticle);
+articleRouter.delete("/:id", deleteArticle);
 
-export default router;
+export default articleRouter;
