@@ -1,7 +1,7 @@
 import Article from "../schemas/ArticleSchema.js";
 
 export const getArticles = async (req, res) => {
-  console.log("GET request made");
+  console.log("GET request made for all articles");
   try {
     const articles = await Article.find();
     if (articles.length == 0) {
@@ -11,6 +11,22 @@ export const getArticles = async (req, res) => {
     }
     res.status(200);
     res.json(articles);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+};
+export const getOneArticle = async (req, res) => {
+  console.log("GET request made for one article");
+  try {
+    const article = await Article.findById(req.params.id);
+    if (!article) {
+      res.status(404);
+      res.send("No artile exists with that id");
+      return;
+    }
+    res.status(200);
+    res.json(article);
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
