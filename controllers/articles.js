@@ -16,8 +16,9 @@ export const getArticles = async (req, res) => {
     res.status(400).send(error);
   }
 };
+//This function may be unnecessary
 export const getOneArticle = async (req, res) => {
-  console.log("GET request made for one article");
+  console.log(`GET request for ${req.params.id}`);
   try {
     const article = await Article.findById(req.params.id);
     if (!article) {
@@ -46,6 +47,7 @@ export const postNewArticle = async (req, res) => {
     });
     const savedArticle = await newArticle.save();
     res.status(200).json(savedArticle);
+    console.log(`Successfully posted article ${savedArticle._id}`);
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
