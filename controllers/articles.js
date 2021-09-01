@@ -3,7 +3,7 @@ import Article from "../schemas/ArticleSchema.js";
 export const getArticles = async (req, res) => {
   console.log("GET request made for all articles");
   try {
-    const articles = await Article.find();
+    const articles = await Article.find().sort({ date: -1 });
     if (articles.length == 0) {
       res.status(404);
       res.send("No articles were found");
@@ -11,23 +11,6 @@ export const getArticles = async (req, res) => {
     }
     res.status(200);
     res.json(articles);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
-  }
-};
-//This function may be unnecessary
-export const getOneArticle = async (req, res) => {
-  console.log(`GET request for ${req.params.id}`);
-  try {
-    const article = await Article.findById(req.params.id);
-    if (!article) {
-      res.status(404);
-      res.send("No artile exists with that id");
-      return;
-    }
-    res.status(200);
-    res.json(article);
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
