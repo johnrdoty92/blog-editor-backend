@@ -29,7 +29,7 @@ export const postNewArticle = async (req, res) => {
       tags: req.body.tags,
     });
     const savedArticle = await newArticle.save();
-    res.status(200).json(savedArticle);
+    res.status(201).json(savedArticle);
     console.log(`Successfully posted article ${savedArticle._id}`);
   } catch (error) {
     console.log(error);
