@@ -6,14 +6,13 @@ export const getArticles = async (req, res) => {
     const articles = await Article.find().sort({ date: -1 });
     if (articles.length == 0) {
       res.status(404);
-      res.send("No articles were found");
+      res.json({ title: "Not found", message: "No articles were found" });
       return;
     }
     res.status(200);
     res.json(articles);
   } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+    res.status(400).json({ title: error.name, message: error.message });
   }
 };
 
@@ -29,33 +28,39 @@ export const postNewArticle = async (req, res) => {
       tags: req.body.tags,
     });
     const savedArticle = await newArticle.save();
-    res.status(201).json(savedArticle);
-    console.log(`Successfully posted article ${savedArticle._id}`);
+    res.status(201).json({
+      title: "Uploaded Article",
+      message: `Successfully uploaded article "${savedArticle.title}"!`,
+    });
   } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+    res.status(400).json({ title: error.name, message: error.message });
   }
 };
 
-export const deleteArticle = async (req, res) => {
+export const deleteArticle = (req, res) => {
   console.log("DELETE request made");
   try {
     Article.findByIdAndDelete(req.params.id, (err, deleted) => {
       if (err) {
         res.status(400);
-        res.send(err);
+        res.json({ title: err.name, message: err.message });
         return;
       }
       if (!deleted) {
         res.status(400);
-        res.send(`Cannot find article with id of ${req.params.id}`);
-        return;
+        res.json({
+          title: "Bad Request",
+          message:
+            "The article you are trying to delete does not exist or has already been deleted",
+        });
       }
-      res.send("Deleted: " + deleted?.title);
+      res.json({
+        title: "Deleted Article",
+        message: `Article "${deleted?.title}" was removed from the database`,
+      });
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+    res.status(400).json({ title: error.name, message: error.message });
   }
 };
 
@@ -70,9 +75,16 @@ export const updateArticle = async (req, res) => {
         new: true,
       }
     );
-    res.status(200).json(updatedArticle);
+    if (updatedArticle === null) {
+      throw new Error(
+        "Article could not be updated. Please refresh or ensure that the database is connected."
+      );
+    }
+    res.status(200).json({
+      title: "Updated Article",
+      message: `Successfully saved changes to article "${updatedArticle.title}"!`,
+    });
   } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+    res.status(400).json({ title: error.name, message: error.message });
   }
 };
