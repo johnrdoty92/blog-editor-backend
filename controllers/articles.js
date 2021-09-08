@@ -1,5 +1,8 @@
 import Article from "../schemas/ArticleSchema.js";
 
+/*==============================================================
+                          GET REQUESTS
+================================================================ */
 export const getArticles = async (req, res) => {
   console.log("GET request made for all articles");
   try {
@@ -15,7 +18,9 @@ export const getArticles = async (req, res) => {
     res.status(400).json({ title: error.name, message: error.message });
   }
 };
-
+/*==============================================================
+                          POST REQUESTS
+================================================================ */
 export const postNewArticle = async (req, res) => {
   console.log("POST request made");
   try {
@@ -36,7 +41,9 @@ export const postNewArticle = async (req, res) => {
     res.status(400).json({ title: error.name, message: error.message });
   }
 };
-
+/*==============================================================
+                          DELETE REQUESTS
+================================================================ */
 export const deleteArticle = (req, res) => {
   console.log("DELETE request made");
   try {
@@ -63,7 +70,9 @@ export const deleteArticle = (req, res) => {
     res.status(400).json({ title: error.name, message: error.message });
   }
 };
-
+/*==============================================================
+                          PATCH REQUESTS
+================================================================ */
 export const updateArticle = async (req, res) => {
   console.log("PATCH request made");
   try {
