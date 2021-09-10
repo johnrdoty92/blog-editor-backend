@@ -2,6 +2,9 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
+import path from "path";
+import { fileURLToPath } from "url";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import articleRouter from "./routes/routes.js";
 
 const server = express();
@@ -9,6 +12,7 @@ const PORT = process.env.PORT || 3001;
 
 server.use(express.urlencoded({ extended: false }));
 server.use(express.json());
+server.use(express.static(path.join(__dirname, "..", "blog-editor", "build")));
 
 //===============================================
 //                    ROUTES
